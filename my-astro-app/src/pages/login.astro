@@ -1,0 +1,431 @@
+---
+---
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Login - Meta Store</title>
+    <style>
+        /* Design System Tokens */
+        :root {
+            /* Colors - Primary */
+            --meta-blue: #0064E0;
+            --meta-blue-hover: #0143B5;
+            --meta-blue-pressed: #004BB9;
+            --meta-blue-light: #47A5FA;
+            
+            /* Colors - Surface & Background */
+            --white: #FFFFFF;
+            --soft-gray: #F1F4F7;
+            --warm-gray: #F7F8FA;
+            --near-black: #1C1E21;
+            
+            /* Colors - Text */
+            --primary-text: #050505;
+            --dark-charcoal: #1C2B33;
+            --secondary-text: #65676B;
+            --slate-gray: #5D6C7B;
+            --divider: #CED0D4;
+            
+            /* Typography */
+            --font-primary: 'Optimistic VF', Montserrat, Helvetica, Arial, sans-serif;
+            --font-secondary: Helvetica, Arial, sans-serif;
+            
+            /* Spacing */
+            --space-3: 8px;
+            --space-5: 12px;
+            --space-7: 16px;
+            --space-9: 24px;
+            --space-10: 32px;
+            --space-12: 48px;
+            --space-13: 64px;
+            --space-14: 80px;
+            
+            /* Border Radius */
+            --radius-input: 8px;
+            --radius-card: 20px;
+            --radius-pill: 100px;
+            
+            /* Shadows */
+            --shadow-level1: 0 2px 4px 0 rgba(0,0,0,0.1);
+            --shadow-level2: 0 12px 28px 0 rgba(0,0,0,0.2), 0 2px 4px 0 rgba(0,0,0,0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--soft-gray);
+            color: var(--dark-charcoal);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Navigation */
+        .nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            height: 56px;
+        }
+        
+        .nav-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 var(--space-9);
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .nav-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark-charcoal);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: var(--space-9);
+        }
+        
+        .nav-link {
+            font-family: var(--font-primary);
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--dark-charcoal);
+            text-decoration: none;
+            transition: color 200ms ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--meta-blue);
+        }
+        
+        /* Main Content */
+        .main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-13) var(--space-9);
+        }
+        
+        .login-container {
+            background: var(--white);
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow-level2);
+            width: 100%;
+            max-width: 440px;
+            padding: var(--space-12);
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: var(--space-10);
+        }
+        
+        .login-title {
+            font-size: 36px;
+            font-weight: 500;
+            color: var(--dark-charcoal);
+            margin-bottom: var(--space-5);
+            line-height: 1.28;
+        }
+        
+        .login-subtitle {
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--slate-gray);
+            line-height: 1.44;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: var(--space-9);
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--dark-charcoal);
+            margin-bottom: var(--space-3);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 14px var(--space-7);
+            font-family: var(--font-primary);
+            font-size: 16px;
+            color: var(--dark-charcoal);
+            background: var(--white);
+            border: 1px solid var(--divider);
+            border-radius: var(--radius-input);
+            transition: border-color 200ms ease, box-shadow 200ms ease;
+        }
+        
+        .form-input::placeholder {
+            color: var(--secondary-text);
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--meta-blue);
+            box-shadow: 0 0 0 3px rgba(0, 100, 224, 0.15);
+        }
+        
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-9);
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            font-size: 14px;
+            color: var(--slate-gray);
+            cursor: pointer;
+        }
+        
+        .checkbox-input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--meta-blue);
+        }
+        
+        .forgot-link {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--meta-blue);
+            text-decoration: none;
+            transition: color 200ms ease;
+        }
+        
+        .forgot-link:hover {
+            color: var(--meta-blue-hover);
+        }
+        
+        /* Button Styles */
+        .btn-primary {
+            width: 100%;
+            padding: 14px 22px;
+            font-family: var(--font-primary);
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: -0.14px;
+            color: var(--white);
+            background: var(--meta-blue);
+            border: none;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: background 200ms ease, transform 150ms ease;
+        }
+        
+        .btn-primary:hover {
+            background: var(--meta-blue-hover);
+            transform: scale(1.02);
+        }
+        
+        .btn-primary:active {
+            background: var(--meta-blue-pressed);
+            transform: scale(0.98);
+        }
+        
+        .btn-primary:focus {
+            outline: 2px solid auto;
+            outline-offset: 3px;
+        }
+        
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: var(--space-10) 0;
+            color: var(--secondary-text);
+            font-size: 14px;
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--divider);
+        }
+        
+        .divider span {
+            padding: 0 var(--space-7);
+        }
+        
+        /* Social Login */
+        .social-login {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-5);
+        }
+        
+        .btn-social {
+            width: 100%;
+            padding: 14px 22px;
+            font-family: var(--font-primary);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--dark-charcoal);
+            background: var(--white);
+            border: 2px solid rgba(10, 19, 23, 0.12);
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-5);
+            transition: background 200ms ease, border-color 200ms ease;
+        }
+        
+        .btn-social:hover {
+            background: rgba(70, 90, 105, 0.07);
+            border-color: rgba(10, 19, 23, 0.2);
+        }
+        
+        /* Footer Link */
+        .login-footer {
+            text-align: center;
+            margin-top: var(--space-10);
+            padding-top: var(--space-10);
+            border-top: 1px solid var(--divider);
+        }
+        
+        .signup-link {
+            font-size: 16px;
+            color: var(--slate-gray);
+        }
+        
+        .signup-link a {
+            color: var(--meta-blue);
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 200ms ease;
+        }
+        
+        .signup-link a:hover {
+            color: var(--meta-blue-hover);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .login-container {
+                padding: var(--space-10);
+            }
+            
+            .login-title {
+                font-size: 28px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">Meta</a>
+            <div class="nav-links">
+                <a href="#" class="nav-link">Quest</a>
+                <a href="#" class="nav-link">Ray-Ban Meta</a>
+                <a href="#" class="nav-link">Accessories</a>
+                <a href="#" class="nav-link">Support</a>
+            </div>
+        </div>
+    </nav>
+    
+    <main class="main">
+        <div class="login-container">
+            <div class="login-header">
+                <h1 class="login-title">Welcome back</h1>
+                <p class="login-subtitle">Sign in to continue to your Meta Store account</p>
+            </div>
+            
+            <form>
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        class="form-input" 
+                        placeholder="Enter your email"
+                        required
+                    />
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        class="form-input" 
+                        placeholder="Enter your password"
+                        required
+                    />
+                </div>
+                
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" class="checkbox-input" />
+                        Remember me
+                    </label>
+                    <a href="#" class="forgot-link">Forgot password?</a>
+                </div>
+                
+                <button type="submit" class="btn-primary">Sign In</button>
+            </form>
+            
+            <div class="divider">
+                <span>or</span>
+            </div>
+            
+            <div class="social-login">
+                <button class="btn-social">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M10 0C4.48 0 0 4.48 0 10C0 14.97 3.66 19.08 8.44 19.85V13.05H5.9V10H8.44V7.8C8.44 5.29 9.93 3.9 12.2 3.9C13.28 3.9 14.42 4.09 14.42 4.09V6.55H13.16C11.92 6.55 11.53 7.32 11.53 8.11V10H14.33L13.88 13.05H11.53V19.85C16.32 19.08 20 14.97 20 10C20 4.48 15.52 0 10 0Z" fill="#1877F2"/>
+                    </svg>
+                    Continue with Facebook
+                </button>
+                <button class="btn-social">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM10 18.33C5.4 18.33 1.67 14.6 1.67 10C1.67 5.4 5.4 1.67 10 1.67C14.6 1.67 18.33 5.4 18.33 10C18.33 14.6 14.6 18.33 10 18.33Z" fill="#EA4335"/>
+                        <path d="M11.67 10.83L10 12.5L8.33 10.83L10 9.17L11.67 10.83Z" fill="#EA4335"/>
+                    </svg>
+                    Continue with Google
+                </button>
+            </div>
+            
+            <div class="login-footer">
+                <p class="signup-link">
+                    Don't have an account? <a href="/register">Sign up</a>
+                </p>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
